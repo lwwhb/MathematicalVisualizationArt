@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1792
     height: 972
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Project
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 264
     height: 477
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -128,7 +128,7 @@ MonoBehaviour:
   - {fileID: 18}
   - {fileID: 12}
   m_Selected: 0
-  m_LastSelected: 2
+  m_LastSelected: 1
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -269,8 +269,8 @@ MonoBehaviour:
     y: 0
     width: 813.5
     height: 477
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 16}
@@ -1325,7 +1325,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/GPUSample/Scenes
+    - Assets/CPUSample/Scenes/FlatTableCloth
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1334,30 +1334,30 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 51
   m_LastFolders:
-  - Assets/GPUSample/Scenes
+  - Assets/CPUSample/Scenes/FlatTableCloth
   m_LastFoldersGridSize: 51
   m_LastProjectPath: /Users/haibowang/Downloads/MathematicalVisualizationArt
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 046d0000
-    m_LastClickedID: 27908
-    m_ExpandedIDs: 00000000f26c0000f46c0000f66c0000f86c0000fa6c0000fc6c0000fe6c0000026d0000046d000000ca9a3b
+    m_SelectedIDs: 926e0000
+    m_LastClickedID: 28306
+    m_ExpandedIDs: 00000000046d0000066d0000086d00000a6d00000c6d00000e6d0000106d0000126d0000146d000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: CPUSample
+      m_OriginalName: CPUSample
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 27918
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_SearchString: 
@@ -1371,7 +1371,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f26c0000f46c0000f66c0000f86c0000fa6c0000fc6c0000fe6c0000006d0000026d0000046d0000
+    m_ExpandedIDs: 00000000046d0000066d0000086d00000a6d00000c6d00000e6d0000106d0000126d0000146d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1513,9 +1513,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: f2740000
+      m_SelectedIDs: b0510000
       m_LastClickedID: 0
-      m_ExpandedIDs: 888fffffb690ffff7491ffff4093ffff1494ffff3096ffffc296ffff2ea7ffffd6a7ffffa2b5ffff4ab6ffff68b7fffffab7ffffccb8ffff56b9ffff5cbaffffeebaffff7ebbffff52bcffffe2bcffff74bdffffdcc6ffffd8cbffffe6d2ffffa2d3ffff46d5ffffe8d5ffff8cd6ffff30d7ffffd4d7ffff76d8ffff6cdbffff10dcffff6edfffffe4e0ffffcce8ffff70e9ffff14eaffff2af2ffff66f3ffff5ef8ffff18fbffff
+      m_ExpandedIDs: 8ce5ffff20e6ffffb4e6ffff48e7ffffdee7ffff40eaffffeaeaffff7aedffff2ceeffff8ef1ffff70f4ffff02f5ffff94f5ffff26f6ffffb8f6ffff4cf7ffffe0f7ffff74f8ffff0cf9ffff1afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
