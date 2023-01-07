@@ -56,6 +56,7 @@ Shader "MathematicalVisualizationArt/SimpleFractal"
             {
                 half3 c;
                 //---编写你的逻辑, 不要超过2023个字节（包括空格）
+                uv = uv + time*0.1;
                 uint i = uv.x * w;
                 uint j = uv.y * h;
                 c.r = ((j^j-i^i)%256)/255.0;

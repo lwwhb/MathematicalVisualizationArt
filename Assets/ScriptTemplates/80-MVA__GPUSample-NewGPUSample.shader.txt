@@ -54,7 +54,7 @@ Shader "MathematicalVisualizationArt/#NAME#"
             
             half3 PixelColor(float2 uv)
             {
-                half3 c;
+                half3 c = half3(0, 0, 0);
                 //---编写你的逻辑, 不要超过2023个字节（包括空格）
                 
                 //

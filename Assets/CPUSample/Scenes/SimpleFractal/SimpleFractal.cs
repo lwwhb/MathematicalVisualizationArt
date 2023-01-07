@@ -61,6 +61,8 @@ public struct GeneratedColorJob_SimpleFractal : IJobFor
     {
         Color32 c32 = new Color32();
         //---------编写你的逻辑, 不要超过2023个字节（包括空格）
+        i += (int)(time * 0.1f * w);
+        j += (int)(time * 0.1f * h);
         c32.r = (byte)(j^j-i^i);
         c32.g = (byte)(i^2+j^2);
         c32.b = (byte)(i^i-j^j);
