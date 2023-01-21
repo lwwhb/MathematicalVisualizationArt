@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 116
+  controlID: 123
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 299.5
     height: 504
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -269,8 +269,8 @@ MonoBehaviour:
     y: 0
     width: 922
     height: 504
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 16}
@@ -1325,7 +1325,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/GPUSample/Scenes
+    - Assets/GPUSample/Scenes/FLatTableCloth
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -1334,16 +1334,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 51
   m_LastFolders:
-  - Assets/GPUSample/Scenes
+  - Assets/GPUSample/Scenes/FLatTableCloth
   m_LastFoldersGridSize: 51
   m_LastProjectPath: /Users/haibowang/Downloads/MathematicalVisualizationArt
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 43}
-    m_SelectedIDs: 0a6d0000
-    m_LastClickedID: 27914
-    m_ExpandedIDs: 00000000026d0000046d0000066d0000086d00000a6d000000ca9a3b
+    scrollPos: {x: 0, y: 268.48663}
+    m_SelectedIDs: 9c6e0000
+    m_LastClickedID: 28316
+    m_ExpandedIDs: 00000000086d00000a6d00000c6d00000e6d0000106d000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1371,7 +1371,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000026d0000046d0000066d0000086d00000a6d0000
+    m_ExpandedIDs: 00000000086d00000a6d00000c6d00000e6d0000106d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1513,9 +1513,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: f4010000
       m_LastClickedID: 0
-      m_ExpandedIDs: 5a5bfeff345efeff0c61feffe463feffbe66feffa669feffc86cfeff926dfeff246efeffb86efefff66ffeff2677feff427ffeffec7ffeff92d8feffa8e0feffe2ceffff8ccffffffaf7ffff0cfbffff
+      m_ExpandedIDs: 18fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -2024,7 +2024,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.10361867, y: -0.009850142, z: 0.0010177493, w: -0.99457425}
     speed: 2
-    m_Value: {x: -0.103617996, y: -0.009850078, z: 0.0010177428, w: -0.9945679}
+    m_Value: {x: -0.10361867, y: -0.009850142, z: 0.0010177493, w: -0.9945742}
   m_Size:
     m_Target: 21.630705
     speed: 2
