@@ -1,4 +1,4 @@
-Shader "MathematicalVisualizationArt/FuncVisualization"
+Shader "MathematicalVisualizationArt/PolarCoordinates"
 {
     Properties
     {
@@ -55,43 +55,36 @@ Shader "MathematicalVisualizationArt/FuncVisualization"
             half3 PixelColor(float2 uv)
             {
                 half3 c = half3(0, 0, 0);
-                float uvSizeScale = 5;
                 //---编写你的逻辑, 不要超过2023个字节（包括空格）
-                 //四象限转一象限
+                float uvSizeScale = 5;
+                //四象限转一象限
                 uv.y = 1.0- uv.y;
-                //全象限 (-5, 5)
+                //全象限 (-1, 1)
                 uv = (uv*2.0 -1.0)*uvSizeScale;
-                //一象限 x在1-2，y在0-2区间
-                //uv.y = uv.y*uvSizeScale;
-                //uv.x = uv.x + 1;
-
-                //绘制坐标轴
+                //消除屏幕拉伸影响
+                half co = w/h;
+                uv = float2(uv.x*co, uv.y);
+                 //绘制坐标轴
                 half axis = smoothstep(0.01, 0.0, abs(uv.y/uvSizeScale)) + smoothstep(0.01, 0.0, abs(uv.x/uvSizeScale));
-                //绘制坐标网格
-                half mesh = 0;
-                for (float i = -uvSizeScale; i <= uvSizeScale; i++)
-                    mesh += smoothstep(0.01, -0.01, abs((uv.y+i)/uvSizeScale)) + smoothstep(0.01, -0.01, abs((uv.x+i)/uvSizeScale));
-                //绘制y = x^5
-                half func = uv.y - pow(uv.x,5);
-                //绘制y = x*x*(2-x)
-                //half func = uv.y - uv.x*uv.x*(2-uv.x);
-                //绘制y = sin(x + t)
-                //half func = uv.y - sin(uv.x + time);
-                //绘制cos(y) = tan(x)
-                //half func = cos(uv.y) - tan(uv.x);
-                //绘制 |y| = sin(|x|) + log(|x|)^2
-                //half func = abs(uv.y) - sin(abs(uv.x)) + pow(log(abs(uv.x)),2);
-                //其他，公式不好打不写了
-                //half func = pow(uv.y,2) + pow(uv.x,2) - sqrt(sqrt(uv.x*uv.y))*5;
-                //half func =  pow(uv.y,2) + pow(uv.x,2) - abs(sqrt(abs(uv.y)) - sqrt(abs(uv.x)));
-                //half func = uv.y - sin(uv.x)*log(uv.x*uv.x);
-                //half func = uv.x*cos(uv.y) + uv.y*cos(uv.x);
-                //half func = 1/uv.x + 1/uv.y - sin(exp(-uv.x*uv.y));
-                //half func = sin(sin(uv.x) + cos(uv.y)) - cos(sin(uv.x * uv.y) + cos(uv.x));
-                
-                half plot = smoothstep(lerp(0.001, 0.02, length(uv)), 0.0, abs(func/uvSizeScale));
-                return half3(axis + mesh, axis + mesh, axis + mesh) + half3(0, plot, 0);
-                //
+                //极径
+                float r = length(uv);
+                //极角
+                float angle = atan2(uv.y,uv.x)+sin(time);
+                //定义坐标系下的函数
+                /*float a = 1, b = 0, k = 0;
+                float f = b + a*cos(k*angle);
+                 f = cos(angle*3.0);
+                 f = abs(cos(angle*3.0));
+                 f = abs(cos(angle*2.5))*0.5+0.3;
+                 f = abs(cos(angle*12.0)*sin(a*3.0))*0.8+0.1;
+                 f = smoothstep(-0.5,1.0, cos(angle*10.0))*0.2+0.5;
+                 f = step(-0.5, cos(angle*10.0))*0.2+0.5;*/
+
+                //心形函数
+                float f = 2-2*sin(angle) + sin(angle)*sqrt(abs(cos(angle)))/(sin(angle) + 1.4);
+
+                half plot = 1.0 - step(f, r);
+                c = half3(axis, axis + plot, axis);
                 return c;
             }
 
