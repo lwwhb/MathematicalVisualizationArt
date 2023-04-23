@@ -2,7 +2,7 @@ Shader "MathematicalVisualizationArt/FlagStart5"
 {
     Properties
     {
-        _value("value",float) = 1
+
     }
     
     SubShader
@@ -53,7 +53,6 @@ Shader "MathematicalVisualizationArt/FlagStart5"
             #define w _ScreenParams.x
             #define h _ScreenParams.y
             
-            float _value;
             //平移
             float3x3 move2d(float2 p)
             {
@@ -108,21 +107,9 @@ Shader "MathematicalVisualizationArt/FlagStart5"
                     float unitAngle = 30;
                     float radius = 0.3;
                     star5 += smoothstep(step_star, -step_star, sdStart5(scale.xy, 0.05, 0.4, float2(-1 + (cos(radians(100 + count * unitAngle)) * radius)* tempStep, -0.67 + (sin(radians(100 + count * unitAngle)) * radius)* tempStep), lerp(3, 1, tempStep),lerp(0.62,95.2, tempStep)));
-
-                   // star5 += smoothstep(step_star, -step_star, sdStart5(scale.xy, 0.05, 0.4, float2(-1 + (cos((89.6 + count * unitAngle * 0.0174532924) * radius)), -0.67 + (sin((89.6 + count * unitAngle * 0.0174532924) * radius))), lerp(3,1,tempStep),lerp(0.62,9.6,tempStep)));
-
-         /*           if (count == 0)
-                    {
-                        star5 = smoothstep(step_star, -step_star, sdStart5(scale.xy, 0.05, 0.4, float2(-1, -0.67), 3, 0.62));
-                    }
-                    else
-                    {
-                        star5 += smoothstep(step_star, -step_star, sdStart5(scale.xy, 0.05, 0.4, float2(-1+cos(89.6+count * unitAngle * 0.0174532924)* radius, -0.67+sin(89.6 +count * unitAngle * 0.0174532924)* radius), 1, 9.6));
-
-                    }*/
                 }
                 c = lerp(c, star_color, star5);
-                //
+  
                 return c;
             }
 
