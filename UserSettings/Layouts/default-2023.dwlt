@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 50}
   m_MaxSize: {x: 32384, y: 8096}
   vertical: 0
-  controlID: 59
+  controlID: 105
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -851,7 +851,7 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 426f0000
+      m_SelectedIDs: 
       m_LastClickedID: 0
       m_ExpandedIDs: 18fbffff
       m_RenameOverlay:
@@ -926,7 +926,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/MaterialTemplates
+    - Assets/GPUSample/Scenes/GradientPalette
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -935,27 +935,27 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/MaterialTemplates
+  - Assets/GPUSample/Scenes/GradientPalette
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\unity_games\instances\arts\MathematicalVisualizationArt
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 626f0000
-    m_LastClickedID: 28514
+    m_SelectedIDs: 546f0000
+    m_LastClickedID: 28500
     m_ExpandedIDs: 00000000b06d0000b26d0000b46d0000b66d0000b86d0000ba6d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: CosineRain
-      m_OriginalName: CosineRain
+      m_Name: Flag
+      m_OriginalName: Flag
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 28488
+      m_UserData: 28496
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
