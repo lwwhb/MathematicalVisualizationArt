@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.burst": {
-      "version": "1.8.2",
+      "version": "1.8.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -10,12 +10,10 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.17.6",
+      "version": "2.0.1",
       "depth": 0,
       "source": "registry",
-      "dependencies": {
-        "com.unity.services.core": "1.0.1"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {
@@ -26,7 +24,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.17",
+      "version": "3.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -50,15 +48,12 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.nuget.newtonsoft-json": {
-      "version": "3.0.2",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.render-pipelines.core": {
+<<<<<<< HEAD
       "version": "15.0.2",
+=======
+      "version": "16.0.0",
+>>>>>>> 619f2044dc7292661de103341dade7883f237339
       "depth": 1,
       "source": "builtin",
       "dependencies": {
@@ -70,14 +65,23 @@
       }
     },
     "com.unity.render-pipelines.universal": {
+<<<<<<< HEAD
       "version": "15.0.2",
+=======
+      "version": "16.0.0",
+>>>>>>> 619f2044dc7292661de103341dade7883f237339
       "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
         "com.unity.burst": "1.8.2",
+<<<<<<< HEAD
         "com.unity.render-pipelines.core": "15.0.2",
         "com.unity.shadergraph": "15.0.2"
+=======
+        "com.unity.render-pipelines.core": "16.0.0",
+        "com.unity.shadergraph": "16.0.0"
+>>>>>>> 619f2044dc7292661de103341dade7883f237339
       }
     },
     "com.unity.searcher": {
@@ -87,28 +91,25 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.services.core": {
-      "version": "1.7.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.modules.androidjni": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.shadergraph": {
+<<<<<<< HEAD
       "version": "15.0.2",
       "depth": 1,
       "source": "builtin",
       "dependencies": {
         "com.unity.render-pipelines.core": "15.0.2",
+=======
+      "version": "16.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "16.0.0",
+>>>>>>> 619f2044dc7292661de103341dade7883f237339
         "com.unity.searcher": "4.9.2"
       }
     },
     "com.unity.test-framework": {
-      "version": "1.3.2",
+      "version": "1.3.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
