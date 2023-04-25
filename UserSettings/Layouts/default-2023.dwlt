@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 50}
   m_MaxSize: {x: 32384, y: 8096}
   vertical: 0
-  controlID: 108
+  controlID: 58
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,7 +166,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 560
     y: 0
-    width: 204.79999
+    width: 241.59998
     height: 722.8
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
@@ -190,9 +190,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 764.8
+    x: 801.6
     y: 0
-    width: 450.39996
+    width: 413.59998
     height: 722.8
   m_MinSize: {x: 232, y: 271}
   m_MaxSize: {x: 10002, y: 10021}
@@ -836,7 +836,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 560
     y: 73.6
-    width: 202.79999
+    width: 239.59998
     height: 701.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -851,9 +851,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
+      m_SelectedIDs: 6a020000
       m_LastClickedID: 0
-      m_ExpandedIDs: 16fbffff
+      m_ExpandedIDs: bcdfffff4ce0ffffb6e1ffff46e2ffffd6e2ffff66e3fffff6e3ffff86e4ffff16e5ffffa6e5ffff36e6ffffc6e6ffff56e7ffff96e9ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -899,9 +899,9 @@ MonoBehaviour:
     m_TextWithWhitespace: "Project\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 764.8
+    x: 801.60004
     y: 73.6
-    width: 448.39996
+    width: 411.59998
     height: 701.8
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -926,7 +926,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/GPUSample/Scenes
+    - Assets/GPUSample/Scenes/Flag
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -935,16 +935,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/GPUSample/Scenes
+  - Assets/GPUSample/Scenes/Flag
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\unity_games\instances\arts\MathematicalVisualizationArt
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: cc6d0000
-    m_LastClickedID: 28108
-    m_ExpandedIDs: 00000000ca6d0000cc6d0000ce6d0000d06d0000d26d0000d46d0000
+    m_SelectedIDs: c26f0000
+    m_LastClickedID: 28610
+    m_ExpandedIDs: 00000000246e0000266e0000286e00002a6e00002c6e00002e6e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -972,7 +972,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ca6d0000cc6d0000ce6d0000d06d0000d26d0000d46d0000
+    m_ExpandedIDs: 00000000246e0000266e0000286e00002a6e00002c6e00002e6e0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -999,7 +999,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1024,7 +1024,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 600}
+    m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 191.80005
@@ -1050,9 +1050,9 @@ MonoBehaviour:
     m_TextWithWhitespace: "Console\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 883.2
+    x: 801.60004
     y: 73.6
-    width: 482.8
+    width: 411.59998
     height: 701.8
   m_SerializedDataModeController:
     m_DataMode: 0
