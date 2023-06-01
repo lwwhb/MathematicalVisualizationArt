@@ -37,7 +37,7 @@ public class SimpleFractal : MonoBehaviour
             JobHandle scheduleJobDependency = new JobHandle();
             JobHandle generatedColorJobHandle = generatedColorJob.ScheduleParallel(colorArray.Length, 16, scheduleJobDependency);
             generatedColorJobHandle.Complete();
-            texture.SetPixelData(colorArray, 0);
+            //texture.SetPixelData(colorArray, 0);//优化掉？
             texture.Apply();
         }
     }
