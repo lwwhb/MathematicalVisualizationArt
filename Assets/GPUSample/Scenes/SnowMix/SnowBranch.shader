@@ -176,7 +176,7 @@ Shader "MathematicalVisualizationArt/SnowBranch"
                 bapb = bapa + polarToCartesian(bapb);
                 bapd = bapa + polarToCartesian(bapd);
 
-                c = branch4p(uv, bapa, bapb, bapc, bapd,120,1.0,snow,0.9,0.13,random_id);
+                c = branch4p(uv, bapa, bapb, bapc, bapd,30,1.0,snow,0.9,0.13,random_id);
                 snow_sum+=snow;
 
                 float bbr = random(13.8768*random_id);
@@ -184,7 +184,7 @@ Shader "MathematicalVisualizationArt/SnowBranch"
                 for(int i = 1; i <= branch_b_count;i++)
                 {
                     float2 derivative = 0;
-                    float2 bbpa = branch4pPosition(bapa,bapb,bapc,bapd,(random(124.2221*i*random_id)*(1.0/branch_b_count)+((i-1.0)/branch_b_count))*0.9,60,derivative);
+                    float2 bbpa = branch4pPosition(bapa,bapb,bapc,bapd,(random(124.2221*i*random_id)*(1.0/branch_b_count)+((i-1.0)/branch_b_count))*0.9,30,derivative);
                     derivative = normalize(derivative);
                     float r = random(191.8768*i*random_id) * 2 - 1;
                     r += (r >= 0 ? 0.2 : -0.2);
@@ -209,7 +209,7 @@ Shader "MathematicalVisualizationArt/SnowBranch"
                         float2 bcpb = float2(bcpc.x + (random(41.8768*i*random_id)*2-1)*pi*0.08333333,bcpc.y * random(213.322*i));
                         bcpc = bcpa + polarToCartesian(bcpc);
                         bcpb = bcpa + polarToCartesian(bcpb);
-                        c += branch3p(uv, bcpa, bcpb, bcpc ,30,0.5,snow,0.3,0.1,random_id);
+                        c += branch3p(uv, bcpa, bcpb, bcpc ,15,0.5,snow,0.3,0.1,random_id);
                         snow_sum+=snow;
                     }
                 }
