@@ -332,7 +332,7 @@ Shader "MathematicalVisualizationArt/LowPolyCat"
                 return normalize(n); 
             }
 
-            half3 triplanerMapping(float3 col_xz,float3 col_xy,float3 col_yz,float3 nor,half3 col)
+            half3 triplanerMapping(float3 col_xz,float3 col_xy,float3 col_yz,float3 nor,half3 col) 
             {
                 nor = abs(nor);
                 nor *= pow(nor,1);
