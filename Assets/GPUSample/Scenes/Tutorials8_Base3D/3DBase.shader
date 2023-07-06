@@ -98,6 +98,59 @@ Shader "MathematicalVisualizationArt/3DBase"
                 }
                 return depth;     
             }
+
+            //通过中心差异的到的比较精确的值
+            float3 GetNormal1(float3 p)
+            {
+                float2 e = float2(EPSILON,0.0);
+                float fdx = sdScene(p+e.xyy) - sdScene(p-e.xyy);
+                float fdy = sdScene(p+e.yxy) - sdScene(p-e.yxy);
+                float fdz = sdScene(p+e.yyx) - sdScene(p-e.yyx);
+                return normalize(float3(fdx,fdy,fdz));
+            }
+            
+            //利用前向微分
+            float3 GetNormal2(float3 p)
+            {
+                float d = sdScene(p);
+                float2 e = float2(EPSILON,0.0);
+                float fdx = sdScene(p+e.xyy) - d;
+                float fdy = sdScene(p+e.yxy) - d;
+                float fdz = sdScene(p+e.yyx) - d;
+                return normalize(float3(fdx,fdy,fdz));
+            }
+            
+            //Paulo Falcao的四面体技术优化
+            float3 GetNormal3(float3 p)
+            {
+                float2 k = float2(1, -1);
+                return normalize(k.xyy*sdScene(p+k.xyy*EPSILON)
+                    + k.yxy*sdScene(p+k.yxy*EPSILON)
+                    + k.yyx*sdScene(p+k.yyx*EPSILON)
+                    + k.xxx*sdScene(p+k.xxx*EPSILON));
+            }
+            // Lambert光照模型
+            float3 Lambert(float3 lightDir, float3 normal, float3 lightColor, float3 diffuseColor)
+            {
+                return lightColor * diffuseColor * max(0.0, dot(normal, lightDir));
+            }
+            // HalfLambert光照模型
+            float3 HalfLambert(float3 lightDir, float3 normal, float3 lightColor, float3 diffuseColor)
+            {
+                return lightColor * diffuseColor * max(0.0, dot(normal, lightDir)*0.5 + 0.5);
+            }
+            // Phong光照模型
+            float3 Phong(float3 lightDir, float3 normal, float3 viewDir, float shininess, float3 lightColor, float3 specularColor)
+            {
+                float3 reflectDir = reflect(-lightDir, normal);
+                return lightColor * specularColor * pow(max(0.0, dot(reflectDir, viewDir)), shininess);
+            }
+            // BlinnPhong光照模型
+            float3 BlinnPhong(float3 lightDir, float3 normal, float3 viewDir, float shininess, float3 lightColor, float3 specularColor)
+            {
+                float3 halfDir = normalize(lightDir + viewDir);
+                return lightColor * specularColor * pow(max(0.0, dot(normal, halfDir)), shininess);
+            }
             
             half3 PixelColor(float2 uv)
             {
@@ -114,18 +167,25 @@ Shader "MathematicalVisualizationArt/3DBase"
 
                 //定义摄像机
                 float3 camPos = float3(0.0, 1.0, -5.0);
-	            float3 lightDir = normalize( float3(uv,1.0) );
+	            float3 rayDir = normalize( float3(uv,1.0) );
                 
-	            float dist = RayMarch(camPos, lightDir);
-                c = half3(dist/(20-time), dist/(20-time), dist/(20-time));
-                /*if (dist > MAX_DIST - EPSILON) {
-                    // Didn't hit anything
-                    c = float4(0.0, 0.0, 0.0, 1.0);
-                }
-                else
+	            float dist = RayMarch(camPos, rayDir);
+                c = half3(dist/MAX_DIST, dist/MAX_DIST, dist/MAX_DIST);
+                
+                if(dist<MAX_DIST)
                 {
-                    c = float4(1.0, 0.0, 0.0, 1.0);
-                }*/
+                    float3 p = camPos+rayDir*dist;
+                    float3 lightPos = float3(3.0,5.0,-5.0);
+                    float3 lightdir = normalize(lightPos-p);
+                    float3 n = GetNormal3(p);
+
+                    float3 matColor = float3(0.5, 0.5, 0.5); 
+                    float3 lightColor = float3(1.0, 1.0, 1.0);
+                    float3 ambient = float3(0.2, 0.2, 0.2);
+                    float3 diffuse = Lambert(lightdir, n, lightColor, matColor);
+                    float3 specular = BlinnPhong(lightdir, n, -rayDir, 32.0, lightColor, matColor);
+                    c+= ambient + diffuse + specular;
+                }
                 return c;
             }
 
