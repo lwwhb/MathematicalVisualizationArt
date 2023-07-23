@@ -69,6 +69,29 @@ Shader "MathematicalVisualizationArt/3DBase"
                 n = normalize(n);
                 return dot(p,n) + h;
             }
+            // 圆环sdf
+            float sdTorus( float3 p, float2 t )
+            {
+              float2 q = float2(length(p.xz)-t.x,p.y);
+              return length(q)-t.y;
+            }
+            // 圆锥sdf
+            float sdCone( float3 p, float2 c, float h )
+            {
+              // c is the sin/cos of the angle, h is height
+              // Alternatively pass q instead of (c,h),
+              // which is the point at the base in 2D
+              float2 q = h*float2(c.x/c.y,-1.0);
+                
+              float2 w = float2( length(p.xz), p.y );
+              float2 a = w - q*clamp( dot(w,q)/dot(q,q), 0.0, 1.0 );
+              float2 b = w - q*float2( clamp( w.x/q.x, 0.0, 1.0 ), 1.0 );
+              float k = sign( q.y );
+              float d = min(dot( a, a ),dot(b, b));
+              float s = max( k*(w.x*q.y-w.y*q.x),k*(w.y-q.y)  );
+              return sqrt(d)*sign(s);
+            }
+            
             // scene sdf
             float sdScene(float3 p)
             {
@@ -76,13 +99,22 @@ Shader "MathematicalVisualizationArt/3DBase"
                 float3 spherePos = float3(0.0, 1.0, 0.0);
                 float sphereRadius = 1.0;
                 float3 sphereNormal = normalize( p - spherePos );
+                //定义圆环
+                float3 torusPos = float3(4.0, 1.0, 0.0);
+                float2 torusRadius = float2(0.8, 0.3);
+                //定义圆锥
+                float3 conePos = float3(-4.0, 2.0, 0.0);
+                float2 coneRadius = float2(0.1, 0.3);
+                float coneHeight = 2.0;
                 //定义平面
                 float3 planePos = float3(0.0, 0.0, 0.0);
                 float3 planeNormal = float3(0.0, 1.0, 0.0);
                 //求交集
                 float sphereDist = sdSphere(p - spherePos, sphereRadius);
+                float torusDist = sdTorus(p - torusPos, torusRadius);
+                float coneDist = sdCone(p - conePos, coneRadius, coneHeight);
                 float planeDist = sdPlane(p - planePos, planeNormal, 0.0);
-                return min(sphereDist, planeDist);
+                return min(min(min(sphereDist, torusDist),coneDist),planeDist);
             }
             // RayMarch, 用于计算光线与物体的交点
             float RayMarch(float3 ro, float3 rd)
@@ -151,6 +183,55 @@ Shader "MathematicalVisualizationArt/3DBase"
                 float3 halfDir = normalize(lightDir + viewDir);
                 return lightColor * specularColor * pow(max(0.0, dot(normal, halfDir)), shininess);
             }
+
+            //硬阴影
+            float hardShadow( float3 ro, float3 rd )
+            {
+                float t = MIN_DIST;
+                for( int i=0; i<MAX_MARCHING_STEPS && t<MAX_DIST; i++ )
+                {
+                    float h = sdScene(ro + rd*t);
+                    if( h<EPSILON )
+                        return 0.0;
+                    t += h;
+                }
+                return 1.0;
+            }
+
+            //软阴影
+            float softshadow( float3 ro, float3 rd, float k )
+            {
+                float res = 1.0;
+                float t = MIN_DIST;
+                for( int i=0; i<MAX_MARCHING_STEPS && t<MAX_DIST; i++ )
+                {
+                    float h = sdScene(ro + rd*t);
+                    if( h < EPSILON )
+                        return 0.0;
+                    res = min( res, k*h/t );
+                    t += h;
+                }
+                return res;
+            }
+
+            float softshadowImprove( float3 ro, float3 rd, float w )
+            {
+                float res = 1.0;
+                float ph = 1e20;
+                float t = MIN_DIST;
+                for( int i=0; i<MAX_MARCHING_STEPS && t<MAX_DIST; i++ )
+                {
+                    float h = sdScene(ro + rd*t);
+                    if( h<EPSILON )
+                        return 0.0;
+                    float y = h*h/(2.0*ph);
+                    float d = sqrt(h*h-y*y);
+                    res = min( res, d/(w*max(0.0,t-y)) );
+                    ph = h;
+                    t += h;
+                }
+                return res;
+            }
             
             half3 PixelColor(float2 uv)
             {
@@ -178,6 +259,15 @@ Shader "MathematicalVisualizationArt/3DBase"
                     float3 lightPos = float3(3.0,5.0,-5.0);
                     float3 lightdir = normalize(lightPos-p);
                     float3 n = GetNormal3(p);
+
+                    //计算硬阴影
+                    //c *= hardShadow(p,lightdir);
+
+                    //计算软阴影
+                    //c *= softshadow(p, lightdir, 8.0);
+
+                    //计算改进软阴影
+                    c *= softshadowImprove(p, lightdir, 0.05f);
 
                     float3 matColor = float3(0.5, 0.5, 0.5); 
                     float3 lightColor = float3(1.0, 1.0, 1.0);
