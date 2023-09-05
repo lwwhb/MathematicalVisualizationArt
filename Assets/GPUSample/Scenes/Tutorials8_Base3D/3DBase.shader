@@ -248,16 +248,118 @@ Shader "MathematicalVisualizationArt/3DBase"
             {
 	            float occ = 0.0;
                 float scale = 0.5;
-                float k = 3.0;
-                float step = 0.03;
+                float k = 5.0;
+                float step = 0.05;
                 for( int i=1; i<=5; i++ )
                 {
                     float distDelta = step*i;
                     float distField = sdScene( p + distDelta*n ); 
                     occ += (distDelta-distField)*scale;
+                    scale *= 0.5;
+                    if(occ > 0.2)
+                        break;
                 }
                 return clamp( (1.0 - k*occ), 0.0, 1.0 );
             }
+
+            //SSAO
+            #define SAMPLENUM 16
+            #define INTENSITY 1.1
+            #define BIAS 0.05
+            float3 random(float2 uv)
+            {
+                half2 iUV = floor(uv);
+                float3 rand;
+                rand.r = frac(sin(dot(iUV.xy,float2(12.9898,78.233)))*43758.5453123);
+                rand.b = frac(sin(dot(iUV.xy,float2(46.7615,197.334)))*43758.5453123);
+                rand.g = frac(sin(dot(iUV.xy,float2(78.8831,123.6512)))*43758.5453123);
+                return rand;
+            }
+            float3 getPosition(float2 uv)
+            {
+                float3 camPos = float3(0.0, 1.0, -5.0);
+	            float3 rayDir = normalize( float3(uv,1.0) );
+	            float dist = RayMarch(camPos, rayDir);
+                return camPos + rayDir*dist;//dist/MAX_DIST;
+            }
+            float calculateSSAO( float2 uv, float3 normal, float depth)
+            {
+                float3 p = getPosition(uv);
+                float radius = 0.001;
+                float scale = radius / depth;
+                float ao = 0.0;
+                for(int i = 0; i < SAMPLENUM; i++)
+                {
+                    float2 randUv = uv*_ScreenParams + (23.71 * float(i));
+                    float3 randNor = random(randUv) * 2.0 - 1.0;
+                    if(dot(normal, randNor) < 0.0)
+                        randNor *= -1.0;
+                    
+                    float2 offset = randNor.xy * scale;
+                    float3 samplePoint = getPosition(uv + offset);
+                    float3 diff = normalize(samplePoint - p);
+                    float occ = INTENSITY * max(0.0, dot(normalize(normal), normalize(diff)) - BIAS) / (length(diff) + 1.0);
+                    ao += 1.0 - occ;
+                } 
+                ao /= float(SAMPLENUM);
+                return ao;
+            }
+
+            //简化版SSAO
+            /*#define INTENSITY 1.1
+            #define SCALE 2.5
+            #define BIAS 0.05
+            #define SAMPLE_RADIUS 0.03
+            //#define DIS_CONSTRAINT 1.2
+            float2 getRandom(float2 uv)
+            {
+                half2 iUV = floor(uv);
+                float2 rand;
+                rand.x = frac(sin(dot(iUV.xy,float2(12.9898,78.233)))*43758.5453123);
+                rand.y = frac(sin(dot(iUV.xy,float2(46.7615,197.334)))*43758.5453123);
+                return normalize(rand*2.0 -1.0);
+            }
+            float3 getPosition(float2 uv) 
+            {
+                float3 camPos = float3(0.0, 1.0, -5.0);
+	            float3 rayDir = normalize( float3(uv,1.0) );
+	            float dist = RayMarch(camPos, rayDir);
+                return camPos + rayDir * dist;
+            }
+            float doAmbientOcclusion(float2 uv, float2 offset, float3 p, float3 n)
+            {
+                 float3 diff = getPosition(offset + uv) - p;
+                 float3 v = normalize(diff);
+                 float d = length(v) * SCALE;
+                 float ao = max(0.0, dot(n, v) - BIAS) * (1.0 / (1.0 + d)) * INTENSITY;
+                 //float l = length(diff);
+                 //ao *= smoothstep(DIS_CONSTRAINT, DIS_CONSTRAINT * 0.5, l);
+                 return ao;
+            }
+            float calculateSSAO(float2 uv, float3 normal, float depth)
+            {
+                const float2 dire[4] = { float2(1, 0), float2(-1, 0), float2(0, 1), float2(0,-1) };
+                float3 p = getPosition(uv);
+                float3 n = normal;
+                float2 rand = getRandom(uv);
+                
+                float ssao = 0.0;
+                int iterations = 4;
+                for(int i = 0; i < iterations; i++)
+                {
+                    float2 coord1 = reflect(dire[i], rand) * SAMPLE_RADIUS;
+                    float2 coord2 = float2(coord1.x * cos(radians(45.0)) - coord1.y * sin(radians(45.0)), 
+                                       coord1.x * cos(radians(45.0)) + coord1.y * sin(radians(45.0)));
+                                       
+                    ssao += doAmbientOcclusion(uv, coord1 * 0.25, p, n);
+                    ssao += doAmbientOcclusion(uv, coord2 * 0.5, p, n);
+                    ssao += doAmbientOcclusion(uv, coord1 * 0.75, p, n);
+                    ssao += doAmbientOcclusion(uv, coord2, p, n);
+                }
+                ssao = ssao / (float(iterations)*2.0);
+                ssao = 1.0 - ssao * INTENSITY;
+                return ssao;
+            }*/
             
             half3 PixelColor(float2 uv)
             {
@@ -299,8 +401,14 @@ Shader "MathematicalVisualizationArt/3DBase"
                     //计算改进软阴影
                     diffuse *= softshadowImprove(p, lightdir, 0.05f);
                     //计算AO
-                    ambient *= calculateAO(p, n);
+                    //ambient *= calculateAO(p, n);
+                    //计算SSAO
+                    ambient *= calculateSSAO(uv, n, dist/MAX_DIST);
                     c+= ambient + diffuse + specular;
+
+                    //Debug AO
+                    //c = calculateSSAO(uv, n, dist/MAX_DIST);
+                    //c = normalize(getPosition(uv));
                 }
                 return c;
             }
