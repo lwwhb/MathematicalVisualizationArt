@@ -57,6 +57,43 @@ Shader "MathematicalVisualizationArt/3DBase"
             #define MAX_DIST  100.0
             #define EPSILON  0.0001
 
+            float2x2 rotate(float a)
+            {
+                float c = cos(a), s = sin(a);
+                return float2x2(c,s,-s,c);
+            }
+            float3x3 rotate(float3 n, float a)
+            {
+                float s = sin(a), c = cos(a), k = 1.0 - c;
+                
+                return float3x3(n.x*n.x*k + c    , n.y*n.x*k - s*n.z, n.z*n.x*k + s*n.y,
+                                n.x*n.y*k + s*n.z, n.y*n.y*k + c    , n.z*n.y*k - s*n.x,
+                                n.x*n.z*k - s*n.y, n.y*n.z*k + s*n.x, n.z*n.z*k + c    );
+            }
+            //定义摄像机相关属性
+            float3 getLookTarget()
+            {
+                return float3(0.0, 1.0, 0.0);
+            }
+            float3 getCameraPos()
+            {
+                //return float3(0.0, 1.0, -5.0);
+                return float3(6.0f*cos(0.5*time), 1.0, 6.0f*sin(0.5*time));
+            }
+            float getDefaultCamerRoll()
+            {
+                return 0.0;
+            }
+            float3x3 getCameraWorldMat( float3 camPos, float3 lookTarget, float cr )
+            {
+	            float3 cw = normalize(lookTarget - camPos);
+	            float3 cp = float3(sin(cr), cos(cr), 0.0);
+	            float3 cu = normalize(cross(cw, cp));
+	            float3 cv = normalize(cross(cu, cw));
+                return float3x3(cu, cv, cw);
+            }
+            //
+            
             // 球体sdf
             float sdSphere( float3 p, float r )
             {
@@ -263,7 +300,7 @@ Shader "MathematicalVisualizationArt/3DBase"
             }
 
             //SSAO
-            #define SAMPLENUM 16
+            /*#define SAMPLENUM 16
             #define INTENSITY 1.1
             #define BIAS 0.05
             float3 random(float2 uv)
@@ -277,8 +314,12 @@ Shader "MathematicalVisualizationArt/3DBase"
             }
             float3 getPosition(float2 uv)
             {
-                float3 camPos = float3(0.0, 1.0, -5.0);
-	            float3 rayDir = normalize( float3(uv,1.0) );
+                float3 camPos = getCameraPos();
+                float3 lookTarget = getLookTarget();
+                float roll = getDefaultCamerRoll();
+                float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
+	            float3 localViewDir = normalize( float3(uv,1.0) );
+                float3 rayDir = mul(camWorldMat, localViewDir);
 	            float dist = RayMarch(camPos, rayDir);
                 return camPos + rayDir*dist;//dist/MAX_DIST;
             }
@@ -303,10 +344,10 @@ Shader "MathematicalVisualizationArt/3DBase"
                 } 
                 ao /= float(SAMPLENUM);
                 return ao;
-            }
+            }*/
 
             //简化版SSAO
-            /*#define INTENSITY 1.1
+            #define INTENSITY 1.1
             #define SCALE 2.5
             #define BIAS 0.05
             #define SAMPLE_RADIUS 0.03
@@ -321,8 +362,12 @@ Shader "MathematicalVisualizationArt/3DBase"
             }
             float3 getPosition(float2 uv) 
             {
-                float3 camPos = float3(0.0, 1.0, -5.0);
-	            float3 rayDir = normalize( float3(uv,1.0) );
+                float3 camPos = getCameraPos();
+                float3 lookTarget = getLookTarget();
+                float roll = getDefaultCamerRoll();
+                float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
+	            float3 localViewDir = normalize( float3(uv,1.0) );
+                float3 rayDir = mul(camWorldMat, localViewDir);
 	            float dist = RayMarch(camPos, rayDir);
                 return camPos + rayDir * dist;
             }
@@ -359,14 +404,13 @@ Shader "MathematicalVisualizationArt/3DBase"
                 ssao = ssao / (float(iterations)*2.0);
                 ssao = 1.0 - ssao * INTENSITY;
                 return ssao;
-            }*/
-            
+            }
             half3 PixelColor(float2 uv)
             {
                 half3 c = half3(0, 0, 0);
                 //---编写你的逻辑, 不要超过2023个字节（包括空格）
                 float uvSizeScale = 1;
-                 //四象限转一象限
+                //四象限转一象限
                 uv.y = 1.0- uv.y;
                 //全象限 (-5, 5)
                 uv = (uv*2.0 -1.0)*uvSizeScale;
@@ -375,8 +419,13 @@ Shader "MathematicalVisualizationArt/3DBase"
                 uv = float2(uv.x*co, uv.y);
 
                 //定义摄像机
-                float3 camPos = float3(0.0, 1.0, -5.0);
-	            float3 rayDir = normalize( float3(uv,1.0) );
+                float3 camPos = getCameraPos();
+                float3 lookTarget = getLookTarget();
+                float3 roll = getDefaultCamerRoll();
+	            float3 localViewDir = normalize( float3(uv,1.0) );
+                
+                float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
+                float3 rayDir = mul(camWorldMat, localViewDir);
                 
 	            float dist = RayMarch(camPos, rayDir);
                 c = half3(dist/MAX_DIST, dist/MAX_DIST, dist/MAX_DIST);
@@ -385,25 +434,25 @@ Shader "MathematicalVisualizationArt/3DBase"
                 {
                     float3 p = camPos+rayDir*dist;
                     float3 lightPos = float3(3.0,5.0,-5.0);
-                    float3 lightdir = normalize(lightPos-p);
+                    float3 lightdirI = normalize(lightPos-p);
                     float3 n = GetNormal3(p);
                     
                     float3 matColor = float3(0.5, 0.5, 0.5); 
                     float3 lightColor = float3(1.0, 1.0, 1.0);
                     float3 ambient = float3(0.2, 0.2, 0.2);
-                    float3 diffuse = Lambert(lightdir, n, lightColor, matColor);
-                    float3 specular = BlinnPhong(lightdir, n, -rayDir, 32.0, lightColor, matColor);
+                    float3 diffuse = Lambert(lightdirI, n, lightColor, matColor);
+                    float3 specular = BlinnPhong(lightdirI, n, -rayDir, 32.0, lightColor, matColor);
 
                     //计算硬阴影
                     //diffuse *= hardShadow(p,lightdir);
                     //计算软阴影
                     //diffuse *= softshadow(p, lightdir, 8.0);
                     //计算改进软阴影
-                    diffuse *= softshadowImprove(p, lightdir, 0.05f);
+                    diffuse *= softshadowImprove(p, lightdirI, 0.05f);
                     //计算AO
-                    //ambient *= calculateAO(p, n);
+                    ambient *= calculateAO(p, n);
                     //计算SSAO
-                    ambient *= calculateSSAO(uv, n, dist/MAX_DIST);
+                    //ambient *= calculateSSAO(uv, n, dist/MAX_DIST);
                     c+= ambient + diffuse + specular;
 
                     //Debug AO
