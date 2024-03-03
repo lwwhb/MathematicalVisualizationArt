@@ -24,6 +24,7 @@ Shader "MathematicalVisualizationArt/#NAME#"
             
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
+            #include "Assets/GPUSample/ShadersLib/Raymarching/RaymarchingRenderer.hlsl"
             
             struct Attributes
             {
@@ -49,16 +50,14 @@ Shader "MathematicalVisualizationArt/#NAME#"
             }
 
             #define time _Time.y
-            #define width _ScreenParams.x
-            #define height _ScreenParams.y
             
             half3 PixelColor(float2 uv)
             {
-                half3 c = half3(0, 0, 0);
-                //---编写你的逻辑, 不要超过2023个字节（包括空格）
+                //初始化
+                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 3, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
                 
-                //
-                return c;
+                //渲染
+                return render(params.camPos, params.rayDir, params.raydx, params.raydy, params.bgColor);
             }
 
             half4 frag(Varyings input) : SV_Target 
