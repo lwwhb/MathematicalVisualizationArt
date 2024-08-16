@@ -1,5 +1,6 @@
 trackSelection = true
 refreshSearchWindowsInPlayMode = false
+pickerAdvancedUI = false
 fetchPreview = true
 defaultFlags = 0
 keepOpen = false
@@ -11,6 +12,9 @@ scopes = {
 	"last_search.5A656512" = "ref=\"Assets/References/Materials/808.mat\""
 	"OpenInspectorPreview.5A656512" = "0"
 	"currentGroup.5A656512" = null
+	"last_search.66F56946" = "sdf"
+	"OpenInspectorPreview.66F56946" = "0"
+	"currentGroup.66F56946" = null
 }
 providers = {
 	asset = {

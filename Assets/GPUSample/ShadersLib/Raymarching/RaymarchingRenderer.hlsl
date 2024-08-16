@@ -39,9 +39,9 @@ RaymarchingParams initRaymarching(float2 uv, float2 resolution, float3 camPos, f
     uv = float2(uv.x*co, uv.y);
     
     RaymarchingParams params = (RaymarchingParams)0;
-    params.bgColor = float3(0.7, 0.7, 0.9);
-    params.camPos = float3(0, 3, -5);
-    params.camTarget = float3(0.0, 0.0, 0.0);
+    params.bgColor = bgColor;
+    params.camPos = camPos;
+    params.camTarget = camTarget;
     params.camRoll = 0;
     float3x3 camWorldMat = getCameraWorldMatrix(params.camPos, params.camTarget, params.camRoll);
     params.rayDir = mul(camWorldMat, normalize(float3(uv.x, uv.y, 1.0)));
@@ -58,17 +58,17 @@ RaymarchingParams initRaymarching(float2 uv, float2 resolution, float3 camPos, f
 float4 RayMarching(float3 ro, float3 rd, float time)
 {
     float4 result = float4(0.0, 0.0, 0.0, 0.0);
-    float depth = 0.0;
+    float dist = 0.0;
     for(int i = 0; i < MAX_MARCHING_STEPS; i++)
     {
-        float3 p = ro + rd*depth;
-        float4 h = sdfScene(p, time);
-        if(depth > MAX_DIST || h.x < MIN_DIST)
+        float3 pos = ro + rd*dist;
+        float step = sdfScene(pos, time);
+        if(dist > MAX_DIST || step < MIN_DIST)
         {
-            result = float4(depth, h.yzw);
+            result = dist;
             break;
         }
-        depth += h.x;
+        dist += step;
     }
     return result;     
 }
@@ -77,9 +77,10 @@ float4 RayMarching(float3 ro, float3 rd, float time)
 float3 render( float3 ro, float3 rd, float3 rdx, float3 rdy, float3 bgColor, float time )
 {
     float3 color = bgColor - max(rd.y,0.0)*0.6;
-    float dist = RayMarching(ro, rd, time);
-    color = half3(dist/MAX_DIST, dist/MAX_DIST, dist/MAX_DIST);
-    return clamp(color,0.0,1.0);
+    float dist = RayMarching(ro, rd, time).x;
+    float depth01 = 1 - clamp(dist / MAX_DIST, 0, 1);
+    half3 depthColor = half3(depth01, depth01, depth01);
+    return lerp(color, depthColor, depth01);
 }
 
 #endif

@@ -2,19 +2,19 @@
 #define SDF_OPERATION_INCLUDED
 
 // sdf并集
-float opU( float d1, float d2 )
+float opUnion( float d1, float d2 )
 {
     return min( d1, d2 );
 }
 
 // sdf交集
-float opI( float d1, float d2 )
+float opIntersection( float d1, float d2 )
 {
     return max( d1, d2 );
 }
 
 // sdf差集
-float opS( float d1, float d2 )
+float opSubtraction( float d1, float d2 )
 {
     return max(-d1, d2);
 }

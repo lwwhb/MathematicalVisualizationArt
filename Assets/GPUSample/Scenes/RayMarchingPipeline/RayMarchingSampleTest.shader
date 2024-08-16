@@ -34,18 +34,19 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
 
             struct Varyings
             {
-                float2 uv                       : TEXCOORD0;
                 float4 positionCS               : SV_POSITION;
-                float4 screenPos                : TEXCOORD1;
+                float2 screenUV                 : TEXCOORD0;
             };
 
             Varyings vert (Attributes input)
             {
                 Varyings output = (Varyings)0;
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
-                output.uv = input.uv;
                 output.positionCS = vertexInput.positionCS;
-                output.screenPos = ComputeScreenPos(vertexInput.positionCS);
+                output.screenUV = ComputeScreenPos(vertexInput.positionCS);
+                #if UNITY_UV_STARTS_AT_TOP
+                    output.screenUV = output.screenUV * float2(1.0, -1.0) + float2(0.0, 1.0);
+                #endif
                 return output;
             }
 
@@ -54,7 +55,7 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
             half3 PixelColor(float2 uv)
             {
                 //初始化
-                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 3, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
+                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 0, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
                 
                 //渲染
                 return render(params.camPos, params.rayDir, params.raydx, params.raydy, params.bgColor, time);
@@ -62,11 +63,7 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
 
             half4 frag(Varyings input) : SV_Target 
             {
-                float2 screenUV = GetNormalizedScreenSpaceUV(input.positionCS);
-                #if UNITY_UV_STARTS_AT_TOP
-                screenUV = screenUV * float2(1.0, -1.0) + float2(0.0, 1.0);
-                #endif
-                half3 col = Gamma22ToLinear(PixelColor(screenUV));
+                half3 col = Gamma22ToLinear(PixelColor(input.screenUV));
                 return half4(col, 1);
             }
             ENDHLSL
