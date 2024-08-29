@@ -55,7 +55,7 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
             half3 PixelColor(float2 uv)
             {
                 //初始化
-                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 0, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
+                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 1.0, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
                 
                 //渲染
                 return render(params.camPos, params.rayDir, params.raydx, params.raydy, params.bgColor, time);

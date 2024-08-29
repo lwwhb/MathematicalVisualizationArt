@@ -1,11 +1,17 @@
 #ifndef SDF_OPERATION_INCLUDED
 #define SDF_OPERATION_INCLUDED
 
-// sdf并集
+//---- sdf并集
 float opUnion( float d1, float d2 )
 {
     return min( d1, d2 );
 }
+//带材质版本
+float2 opUnion( float2 d1, float2 d2 )
+{
+    return d1.x < d2.x ? d1 : d2;
+}
+//----
 
 // sdf交集
 float opIntersection( float d1, float d2 )

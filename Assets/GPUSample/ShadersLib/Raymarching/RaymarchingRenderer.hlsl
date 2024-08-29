@@ -1,12 +1,11 @@
 #ifndef RAYMARCHING_RENDERER_INCLUDED
 #define RAYMARCHING_RENDERER_INCLUDED
 
-#include "../SDFScenes/SDFScene.hlsl"
+#include "../Utilities/Utilities.hlsl"
 
-#define MAX_MARCHING_STEPS 100
-#define MIN_DIST  0.01
-#define MAX_DIST  100.0
-#define EPSILON  0.0001
+#define MAX_MARCHING_STEPS 200
+#define MIN_DIST  0.001
+#define MAX_DIST  40.0
 
 struct RaymarchingParams
 {
@@ -18,6 +17,7 @@ struct RaymarchingParams
     float3 raydx;           //射线方向x方向的微分
     float3 raydy;           //射线方向y方向的微分
 };
+
 //设置相机矩阵
 float3x3 getCameraWorldMatrix(float3 ro, float3 ta, float cr )
 {
@@ -55,32 +55,41 @@ RaymarchingParams initRaymarching(float2 uv, float2 resolution, float3 camPos, f
 }
 
 // RayMarch, 用于计算光线与物体的交点
-float4 RayMarching(float3 ro, float3 rd, float time)
+float4 RayMarching(float3 ro, float3 rd)
 {
-    float4 result = float4(0.0, 0.0, 0.0, 0.0);
     float dist = 0.0;
+    float materialIndex = -1.0;
     for(int i = 0; i < MAX_MARCHING_STEPS; i++)
     {
         float3 pos = ro + rd*dist;
-        float step = sdfScene(pos, time);
-        if(dist > MAX_DIST || step < MIN_DIST)
-        {
-            result = dist;
+        float2 step = sdfScene(pos);
+        if(dist > MAX_DIST || step.x < MIN_DIST)
             break;
-        }
-        dist += step;
+        dist += step.x;
+        materialIndex = step.y;
     }
-    return result;     
+    if(dist > MAX_DIST)
+        materialIndex = -1.0f;
+    return float4(dist, materialIndex, 0, 0);     
 }
 
 //渲染场景
 float3 render( float3 ro, float3 rd, float3 rdx, float3 rdy, float3 bgColor, float time )
 {
     float3 color = bgColor - max(rd.y,0.0)*0.6;
-    float dist = RayMarching(ro, rd, time).x;
-    float depth01 = 1 - clamp(dist / MAX_DIST, 0, 1);
-    half3 depthColor = half3(depth01, depth01, depth01);
-    return lerp(color, depthColor, depth01);
+    float4 hit = RayMarching(ro, rd);
+    float dist = hit.x;
+    float materialIndex = hit.y;
+
+    if(materialIndex > 0)
+    {
+        float3 pos = ro + dist*rd;
+        float3 normal = GetNormal(pos);
+        float depth01 = 1 - clamp(dist / MAX_DIST, 0, 1);
+        Material material = GetMaterial(materialIndex);
+        color = lerp(color, material.baseColor, depth01);
+    }
+    return color;
 }
 
 #endif

@@ -1,10 +1,21 @@
 #ifndef SDF_GEOMETORY_INCLUDED
 #define SDF_GEOMETORY_INCLUDED
 
+// 平面sdf
+// p: 点
+// n: 法线
+// h: 点线法距离
+float sdfPlane( float3 p, float3 n, float h )
+{
+    // n must be normalized
+    n = normalize(n);
+    return dot(p,n) + h;
+}
+
 // 球体sdf
 // r: 球体半径
 // p: 点
-float sdSphere( float3 p, float r )
+float sdfSphere( float3 p, float r )
 {
     return length(p)-r;
 }
@@ -12,7 +23,7 @@ float sdSphere( float3 p, float r )
 // 长方体sdf
 // b: 长方体的半边长
 // p: 点
-float sdBox( float3 p, float3 b )
+float sdfBox( float3 p, float3 b )
 {
     float3 d = abs(p) - b;
     return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
@@ -22,7 +33,7 @@ float sdBox( float3 p, float3 b )
 // b: 长方体的半边长
 // r: 圆角半径
 // p: 点
-float sdRoundBox( float3 p, float3 b, float r )
+float sdfRoundBox( float3 p, float3 b, float r )
 {
     float3 d = abs(p) - b;
     return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0)) - r;
@@ -32,7 +43,7 @@ float sdRoundBox( float3 p, float3 b, float r )
 // h: 高度
 // r: 半径
 // p: 点
-float sdCylinder( float3 p, float h, float r )
+float sdfCylinder( float3 p, float h, float r )
 {
     float2 d = abs(float2(length(p.xz),p.y)) - float2(r,h);
     return min(max(d.x,d.y),0.0) + length(max(d,0.0));
@@ -43,7 +54,7 @@ float sdCylinder( float3 p, float h, float r )
 // r1: 底部半径
 // r2: 顶部半径
 // p: 点
-float sdCappedCone( float3 p, float h, float r1, float r2 )
+float sdfCappedCone( float3 p, float h, float r1, float r2 )
 {
     float2 q = float2(length(p.xz),p.y);
     float b = (r1-r2)/h;
