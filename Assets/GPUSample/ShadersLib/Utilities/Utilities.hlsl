@@ -59,7 +59,7 @@ Material GetMaterial(float materialIndex, float3 position)
     else if(materialIndex < 4.0f)
     {
         retMat.albedo = float3(0, 1, 0);
-        retMat.metallic = 0.0f;
+        retMat.metallic = 0.9f;
         retMat.roughness = 0.2f;
     }
     else if(materialIndex < 5.0f)

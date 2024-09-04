@@ -55,8 +55,8 @@ half3 render( RaymarchingParams params, float time )
         float3 position = params.camPos + dist*params.rayDir;
         float3 normal = GetNormal(position);
         half3 lightColor = half3(0.98, 0.92, 0.89);
-        float3 lightDirI = normalize(params.lightPos - position);
-        //float3 lightDirI = normalize(float3(0.6, 0.7, -0.7));
+        //float3 lightDirI = normalize(params.lightPos - position);
+        float3 lightDirI = normalize(float3(0.6, 0.7, -0.7));
         half lightIntensity = 2.0f;
         half indirectLightIntensity = 0.64f;
         Material material = GetMaterial(materialIndex, position);
