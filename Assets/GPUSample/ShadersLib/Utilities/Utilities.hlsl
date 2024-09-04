@@ -27,15 +27,35 @@ float3 GetNormal(float3 p)
 
 Material GetMaterial(float materialIndex)
 {
-    Material retMat;
+    Material retMat = (Material)0;
     if(materialIndex < 2.0f)
-        retMat.baseColor = float3(1, 1, 1);
+    {
+        retMat.albedo = float3(1, 1, 1);
+        retMat.metallic = 1.0f;
+        retMat.specular = float3(1, 1, 1);
+        retMat.roughness = 1.0f;
+    }
     else if(materialIndex < 3.0f)
-        retMat.baseColor = float3(1, 0, 0);
+    {
+        retMat.albedo = float3(1, 0, 0);
+        retMat.metallic = 0.1f;
+        retMat.specular = float3(1, 1, 1);
+        retMat.roughness = 0.5f;
+    }
     else if(materialIndex < 4.0f)
-        retMat.baseColor = float3(0, 1, 0);
+    {
+        retMat.albedo = float3(0, 1, 0);
+        retMat.metallic = 0.9f;
+        retMat.specular = float3(1, 1, 1);
+        retMat.roughness = 0.2f;
+    }
     else if(materialIndex < 5.0f)
-        retMat.baseColor = float3(0, 0, 1);
+    {
+        retMat.albedo = float3(0, 0, 1);
+        retMat.metallic = 0.7f;
+        retMat.specular = float3(1, 1, 1);
+        retMat.roughness = 1.0f;
+    }
     return retMat;
 }
 

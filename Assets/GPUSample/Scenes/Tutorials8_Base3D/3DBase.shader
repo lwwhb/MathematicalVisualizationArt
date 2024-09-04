@@ -319,7 +319,7 @@ Shader "MathematicalVisualizationArt/3DBase"
                 float roll = getDefaultCamerRoll();
                 float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
 	            float3 localViewDir = normalize( float3(uv,1.0) );
-                float3 rayDir = mul(camWorldMat, localViewDir);
+                float3 rayDir = mul(localViewDir, camWorldMat);
 	            float dist = RayMarch(camPos, rayDir);
                 return camPos + rayDir*dist;//dist/MAX_DIST;
             }
@@ -367,7 +367,7 @@ Shader "MathematicalVisualizationArt/3DBase"
                 float roll = getDefaultCamerRoll();
                 float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
 	            float3 localViewDir = normalize( float3(uv,1.0) );
-                float3 rayDir = mul(camWorldMat, localViewDir);
+                float3 rayDir = mul(localViewDir, camWorldMat);
 	            float dist = RayMarch(camPos, rayDir);
                 return camPos + rayDir * dist;
             }
@@ -425,7 +425,7 @@ Shader "MathematicalVisualizationArt/3DBase"
 	            float3 localViewDir = normalize( float3(uv,1.0) );
                 
                 float3x3 camWorldMat = getCameraWorldMat(camPos, lookTarget, roll);
-                float3 rayDir = mul(camWorldMat, localViewDir);
+                float3 rayDir = mul(localViewDir, camWorldMat);
                 
 	            float dist = RayMarch(camPos, rayDir);
                 c = half3(dist/MAX_DIST, dist/MAX_DIST, dist/MAX_DIST);

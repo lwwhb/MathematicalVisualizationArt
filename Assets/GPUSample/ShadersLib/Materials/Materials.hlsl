@@ -3,7 +3,11 @@
 
 struct Material
 {
-    float3 baseColor;       //基础颜色
+    half3  albedo;       
+    half   metallic;       
+    half3  specular;
+    half   roughness;
+    half   alpha;
 };
 
 #endif

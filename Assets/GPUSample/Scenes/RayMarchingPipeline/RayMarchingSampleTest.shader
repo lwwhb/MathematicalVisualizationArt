@@ -43,7 +43,7 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
                 Varyings output = (Varyings)0;
                 VertexPositionInputs vertexInput = GetVertexPositionInputs(input.positionOS.xyz);
                 output.positionCS = vertexInput.positionCS;
-                output.screenUV = ComputeScreenPos(vertexInput.positionCS);
+                output.screenUV = ComputeScreenPos(vertexInput.positionCS).xy;
                 #if UNITY_UV_STARTS_AT_TOP
                     output.screenUV = output.screenUV * float2(1.0, -1.0) + float2(0.0, 1.0);
                 #endif
@@ -55,10 +55,16 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
             half3 PixelColor(float2 uv)
             {
                 //初始化
-                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, float3(0, 1.0, -5), float3(0.0, 0.0, 0.0), 0, float3(0.7, 0.7, 0.9));
+                float3 camPos = float3(0.0, 2.0, 0.0);
+                float3 camTarget = float3(0.0, 0.0, 0.0);
+                camPos.x += 5.0 * cos(time * 0.5);
+                camPos.z += 5.0 * sin(time * 0.5);
+                float3 lightPos = float3(5.0, 5.0, -5.0);
+                float3 bgColor = float3(0.7, 0.7, 0.9);
                 
+                RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, camPos, camTarget, 0, lightPos, bgColor);
                 //渲染
-                return render(params.camPos, params.rayDir, params.raydx, params.raydy, params.bgColor, time);
+                return render(params, time);
             }
 
             half4 frag(Varyings input) : SV_Target 

@@ -12,7 +12,7 @@ float2 sdfScene(float3 p)
     //定义地面
     float3 planePos = float3(0.0, 0.0, 0.0);
     float3 planeNormal = float3(0.0, 1.0, 0.0);
-    float3 planeDistance = 0.0;
+    float planeDistance = 0.0;
     float planeMaterialIndex = 1.0f;
     float2 plane = float2(sdfPlane(p - planePos, planeNormal, planeDistance), planeMaterialIndex);
     
