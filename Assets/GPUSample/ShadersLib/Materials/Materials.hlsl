@@ -5,7 +5,6 @@ struct Material
 {
     half3  albedo;       
     half   metallic;       
-    half3  specular;
     half   roughness;
     half   alpha;
 };

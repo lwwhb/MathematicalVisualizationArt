@@ -54,19 +54,27 @@ half3 render( RaymarchingParams params, float time )
     {
         float3 position = params.camPos + dist*params.rayDir;
         float3 normal = GetNormal(position);
-        //half3 lightColor = half3(0.98, 0.92, 0.89);
-        half3 lightColor = half3(1, 1, 1);
-        half3 lightSpecularColor = half3(1, 1, 1);
+        half3 lightColor = half3(0.98, 0.92, 0.89);
         float3 lightDirI = normalize(params.lightPos - position);
+        //float3 lightDirI = normalize(float3(0.6, 0.7, -0.7));
         half lightIntensity = 2.0f;
         half indirectLightIntensity = 0.64f;
-        Material material = GetMaterial(materialIndex);
+        Material material = GetMaterial(materialIndex, position);
         half shadow = softshadowImprove(position, lightDirI, 0.05f);
         
         half3 diffuseAndSpecular = calculateLighting(position, lightDirI, normal, -params.rayDir, lightColor, lightIntensity, indirectLightIntensity,shadow, material, params.bgColor);
         float depth01 = 1 - clamp(dist / MAX_DIST, 0, 1);
         color = lerp(color, diffuseAndSpecular, depth01);
     }
+    // Tone mapping
+    color = Tonemap_ACES(color);
+    
+    // Exponential distance fog
+    color = lerp(color, 0.8 * half3(0.7, 0.8, 1.0), 1.0 - exp2(-0.0011 * dist * dist));
+
+    // Gamma compression
+    color = OECF_sRGBFast(color);
+    
     return color;
 }
 

@@ -25,7 +25,7 @@ half2 PrefilteredDFG_Karis(half roughness, half NoV) {
     return half2(-1.04, 1.04) * a004 + r.zw;
 }
 
-half3 LightingIndirect(float3 position, float3 normal, float3 reflectDir, float NoV, half indirectIntensity, half3 f0, half3 diffuseColor, half3 bgColor)
+half3 LightingIndirect(float3 position, float3 normal, float3 reflectDir, float NoV, half indirectIntensity, half3 f0, half3 diffuseColor, half roughness, half3 bgColor)
 {
     // diffuse indirect
     half3 indirectDiffuse = Irradiance_SphericalHarmonics(normal) * Fd_Lambert();
@@ -33,12 +33,11 @@ half3 LightingIndirect(float3 position, float3 normal, float3 reflectDir, float 
     float4 indirectHit = RayMarching(position, reflectDir);
     half3 indirectSpecular = bgColor + reflectDir.y * 0.72;
     float materialIndex = indirectHit.y;
-    float roughness = 0.0;
-    if (materialIndex > 0.0) {
+    if (materialIndex > 0.0)
+    {
         float3 indirectPosition = position + indirectHit.x * reflectDir;
-        Material material = GetMaterial(materialIndex);
+        Material material = GetMaterial(materialIndex, indirectPosition);
         indirectSpecular = material.albedo;
-        roughness = material.roughness;
     }
     
     // indirect contribution

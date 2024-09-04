@@ -23,7 +23,7 @@ struct RaymarchingParams
 // RayMarch, 用于计算光线与物体的交点
 float4 RayMarching(float3 ro, float3 rd)
 {
-    float dist = 0.0;
+    float dist = MIN_DIST;
     float materialIndex = -1.0;
     for(int i = 0; i < MAX_MARCHING_STEPS; i++)
     {
