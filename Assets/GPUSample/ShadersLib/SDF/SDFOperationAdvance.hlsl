@@ -10,6 +10,12 @@ float opSmoothUnion(float d1, float d2, float k)
     float h = clamp(0.5 + 0.5 * (d2 - d1) / k, 0.0, 1.0);
     return lerp(d2, d1, h) - k * h * (1.0 - h);
 }
+//带材质版本 颜色混合待实现
+float2 opSmoothUnion( float2 d1, float2 d2 ,float k)
+{
+    float h = clamp(0.5 + 0.5 * (d2.x - d1.x) / k, 0.0, 1.0);
+    return lerp(d2, d1, h) - k * h * (1.0 - h);
+}
 
 // sdf多项式平滑交集 (k=32)
 // d1: sdf1

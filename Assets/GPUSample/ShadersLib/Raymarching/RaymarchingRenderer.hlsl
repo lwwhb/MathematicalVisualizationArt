@@ -43,7 +43,7 @@ RaymarchingParams initRaymarching(float2 uv, float2 resolution, float3 camPos, f
 }
 
 //渲染场景
-half3 render( RaymarchingParams params, float time )
+half3 render( RaymarchingParams params )
 {
     half3 color = params.bgColor - max(params.rayDir.y,0.0)*0.72;   //skyColor
     float4 hit = RayMarching(params.camPos, params.rayDir);

@@ -57,14 +57,14 @@ Shader "MathematicalVisualizationArt/RayMarchingSampleTest"
                 //初始化
                 float3 camPos = float3(0.0, 2.0, 0.0);
                 float3 camTarget = float3(0.0, 0.0, 0.0);
-                camPos.x += 5.0 * cos(time * 0.5);
-                camPos.z += 5.0 * sin(time * 0.5);
+                camPos.x += 3.0 * cos(time * 0.5);
+                camPos.z += 3.0 * sin(time * 0.5);
                 float3 lightPos = float3(5.0, 5.0, -5.0);
                 float3 bgColor = float3(0.7, 0.7, 0.9);
                 
                 RaymarchingParams params = initRaymarching(uv, _ScreenParams.xy, camPos, camTarget, 0, lightPos, bgColor);
                 //渲染
-                return render(params, time);
+                return render(params);
             }
 
             half4 frag(Varyings input) : SV_Target 
